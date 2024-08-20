@@ -22,16 +22,35 @@ GOOS_macosx := darwin
 GOOS_iphoneos := ios
 
 build: $(DESTDIR)/libwg-go.a
-version-header: $(DESTDIR)/wireguard-go-version.h
+	@echo "Building libwg-go.a"
 
-REAL_GOROOT := $(shell go env GOROOT 2>/dev/null)
+version-header: $(DESTDIR)/wireguard-go-version.h
+	@echo "Generating version header"
+	@echo "Version header generated" # Added for additional feedback
+
+#REAL_GOROOT := $(shell go env GOROOT>/dev/null)
+#export GOROOT := $(BUILDDIR)/goroot
+
+# Updated Makefile snippet
+REAL_GOROOT := /opt/homebrew/Cellar/go/1.22.6/libexec
 export GOROOT := $(BUILDDIR)/goroot
+	
+#$(GOROOT)/.prepared:
+#	[ -n "$(REAL_GOROOT)" ]
+#	mkdir -p "$(GOROOT)"
+#	rsync -a --delete --exclude=pkg/obj/go-build "$(REAL_GOROOT)/" "$(GOROOT)/"
+#	cat goruntime-*.diff | patch -p1 -f -N -r- -d "$(GOROOT)"
+#	touch "$@"
+	
+	
 $(GOROOT)/.prepared:
-	[ -n "$(REAL_GOROOT)" ]
+	@echo "Preparing GOROOT"
+	[ -n "$(REAL_GOROOT)" ] || (echo "REAL_GOROOT is not set"; exit 1)
 	mkdir -p "$(GOROOT)"
 	rsync -a --delete --exclude=pkg/obj/go-build "$(REAL_GOROOT)/" "$(GOROOT)/"
 	cat goruntime-*.diff | patch -p1 -f -N -r- -d "$(GOROOT)"
 	touch "$@"
+	@echo "GOROOT prepared"
 
 define libwg-go-a
 $(BUILDDIR)/libwg-go-$(1).a: export CGO_ENABLED := 1
@@ -40,21 +59,30 @@ $(BUILDDIR)/libwg-go-$(1).a: export CGO_LDFLAGS := $(CFLAGS_PREFIX) $(ARCH)
 $(BUILDDIR)/libwg-go-$(1).a: export GOOS := $(GOOS_$(PLATFORM_NAME))
 $(BUILDDIR)/libwg-go-$(1).a: export GOARCH := $(GOARCH_$(1))
 $(BUILDDIR)/libwg-go-$(1).a: $(GOROOT)/.prepared go.mod
+	@echo "Building libwg-go-$(1).a for $(ARCH)"
 	go build -ldflags=-w -trimpath -v -o "$(BUILDDIR)/libwg-go-$(1).a" -buildmode c-archive
 	rm -f "$(BUILDDIR)/libwg-go-$(1).h"
+	@echo "libwg-go-$(1).a built"
 endef
 $(foreach ARCH,$(ARCHS),$(eval $(call libwg-go-a,$(ARCH))))
 
 $(DESTDIR)/wireguard-go-version.h: go.mod $(GOROOT)/.prepared
-	 sed -E -n 's/.*golang\.zx2c4\.com\/wireguard +v[0-9.]+-[0-9]+-([0-9a-f]{8})[0-9a-f]{4}.*/#define WIREGUARD_GO_VERSION "\1"/p' "$<" > "$@"
+	@echo "Generating wireguard-go-version.h"
+	sed -E -n 's/.*golang\.zx2c4\.com\/wireguard +v[0-9.]+-[0-9]+-([0-9a-f]{8})[0-9a-f]{4}.*/#define WIREGUARD_GO_VERSION "\1"/p' "$<" > "$@"
+	@echo "wireguard-go-version.h generated"
 
 $(DESTDIR)/libwg-go.a: $(foreach ARCH,$(ARCHS),$(BUILDDIR)/libwg-go-$(ARCH).a)
+	@echo "Creating libwg-go.a"
 	@mkdir -vp "$(DESTDIR)"
 	$(LIPO) -create -output "$@" $^
+	@echo "libwg-go.a created"
 
 clean:
+	@echo "Cleaning up"
 	rm -rf "$(BUILDDIR)" "$(DESTDIR)/libwg-go.a" "$(DESTDIR)/wireguard-go-version.h"
+	@echo "Cleaned up"
 
 install: build
+	@echo "Install step"
 
 .PHONY: clean build version-header install

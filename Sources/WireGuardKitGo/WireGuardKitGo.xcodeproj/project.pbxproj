@@ -1,0 +1,154 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXFileReference section */
+		C8EDCAAA2C73B64A00DADF8B /* go.mod */ = {isa = PBXFileReference; lastKnownFileType = text; path = go.mod; sourceTree = "<group>"; };
+		C8EDCAAB2C73B64A00DADF8B /* api-apple.go */ = {isa = PBXFileReference; lastKnownFileType = text; path = "api-apple.go"; sourceTree = "<group>"; };
+		C8EDCAAC2C73B64A00DADF8B /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		C8EDCAAD2C73B64A00DADF8B /* goruntime-boottime-over-monotonic.diff */ = {isa = PBXFileReference; lastKnownFileType = text; path = "goruntime-boottime-over-monotonic.diff"; sourceTree = "<group>"; };
+		C8EDCAAE2C73B64A00DADF8B /* go.sum */ = {isa = PBXFileReference; lastKnownFileType = text; path = go.sum; sourceTree = "<group>"; };
+		C8EDCAAF2C73B64A00DADF8B /* dummy.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dummy.c; sourceTree = "<group>"; };
+		C8EDCAB02C73B64A00DADF8B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		C8EDCAB12C73B64A00DADF8B /* wireguard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wireguard.h; sourceTree = "<group>"; };
+		C8EDCAB22C73B64A00DADF8B /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		C8EDCAA42C73B64A00DADF8B = {
+			isa = PBXGroup;
+			children = (
+				C8EDCAAA2C73B64A00DADF8B /* go.mod */,
+				C8EDCAAB2C73B64A00DADF8B /* api-apple.go */,
+				C8EDCAAC2C73B64A00DADF8B /* Makefile */,
+				C8EDCAAD2C73B64A00DADF8B /* goruntime-boottime-over-monotonic.diff */,
+				C8EDCAAE2C73B64A00DADF8B /* go.sum */,
+				C8EDCAAF2C73B64A00DADF8B /* dummy.c */,
+				C8EDCAB02C73B64A00DADF8B /* .gitignore */,
+				C8EDCAB12C73B64A00DADF8B /* wireguard.h */,
+				C8EDCAB22C73B64A00DADF8B /* module.modulemap */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		C8EDCAA92C73B64A00DADF8B /* WireGuardKitGo */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = C8EDCAB32C73B64A00DADF8B /* Build configuration list for PBXLegacyTarget "WireGuardKitGo" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "/Users/softradix/Documents/DemoSwift/VPN/wireguard-apple/Sources/WireGuardKitGo";
+			dependencies = (
+			);
+			name = WireGuardKitGo;
+			passBuildSettingsInEnvironment = 1;
+			productName = WireGuardKitGo;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		C8EDCAA52C73B64A00DADF8B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+			};
+			buildConfigurationList = C8EDCAA82C73B64A00DADF8B /* Build configuration list for PBXProject "WireGuardKitGo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C8EDCAA42C73B64A00DADF8B;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C8EDCAA92C73B64A00DADF8B /* WireGuardKitGo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		C8EDCAA62C73B64A00DADF8B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS)";
+				COPY_PHASE_STRIP = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx14.5;
+			};
+			name = Debug;
+		};
+		C8EDCAA72C73B64A00DADF8B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS)";
+				COPY_PHASE_STRIP = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx14.5;
+			};
+			name = Release;
+		};
+		C8EDCAB42C73B64A00DADF8B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = WireGuardKitGo;
+			};
+			name = Debug;
+		};
+		C8EDCAB52C73B64A00DADF8B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = WireGuardKitGo;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C8EDCAA82C73B64A00DADF8B /* Build configuration list for PBXProject "WireGuardKitGo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8EDCAA62C73B64A00DADF8B /* Debug */,
+				C8EDCAA72C73B64A00DADF8B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C8EDCAB32C73B64A00DADF8B /* Build configuration list for PBXLegacyTarget "WireGuardKitGo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8EDCAB42C73B64A00DADF8B /* Debug */,
+				C8EDCAB52C73B64A00DADF8B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C8EDCAA52C73B64A00DADF8B /* Project object */;
+}
