@@ -35,6 +35,9 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
 
                 wg_log(.info, message: "Tunnel interface is \(interfaceName)")
 
+                // Raman:- Start observing packets
+//                self.observePackets()
+
                 completionHandler(nil)
                 return
             }
@@ -67,6 +70,26 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
                 fatalError()
             }
         }
+    }
+
+    private func observePackets() {
+        packetFlow.readPackets { packets, protocols in
+            print("packet received")
+            for (packet, protocolNumber) in zip(packets, protocols) {
+                self.printPacket(packet, protocolNumber: protocolNumber)
+            }
+
+            // Continue observing packets
+            self.observePackets()
+        }
+    }
+
+    private func printPacket(_ packet: Data, protocolNumber: NSNumber) {
+        // Here you can analyze the packet or simply print it.
+        // For example, let's print the packet as a hex string and its protocol number:
+
+        let packetHex = packet.map { String(format: "%02x", $0) }.joined()
+        wg_log(.info, message: "Received packet: \(packetHex) with protocol: \(protocolNumber)")
     }
 
     override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
@@ -104,6 +127,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             completionHandler(nil)
         }
     }
+
 }
 
 extension WireGuardLogLevel {
