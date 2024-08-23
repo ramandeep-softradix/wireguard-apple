@@ -32,7 +32,11 @@ version-header: $(DESTDIR)/wireguard-go-version.h
 #export GOROOT := $(BUILDDIR)/goroot
 
 # Updated Makefile snippet
-REAL_GOROOT := /opt/homebrew/Cellar/go/1.22.6/libexec
+#REAL_GOROOT := /opt/homebrew/Cellar/go/1.22.6/libexec
+#export GOROOT := $(BUILDDIR)/goroot
+
+# Updated Makefile snippet
+REAL_GOROOT := $(shell go env GOROOT>/dev/null)
 export GOROOT := $(BUILDDIR)/goroot
 	
 #$(GOROOT)/.prepared:
