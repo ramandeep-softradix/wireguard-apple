@@ -22,9 +22,7 @@ extension NETunnelProviderProtocol {
         if passwordReference == nil {
             return nil
         }
-        #if os(macOS)
-        providerConfiguration = ["UID": getuid()]
-        #endif
+
 
         let endpoints = tunnelConfiguration.peers.compactMap { $0.endpoint }
         if endpoints.count == 1 {
@@ -64,9 +62,7 @@ extension NETunnelProviderProtocol {
          * around so that .mobileconfig files are easier.
          */
         if let oldConfig = providerConfiguration?["WgQuickConfig"] as? String {
-            #if os(macOS)
-            providerConfiguration = ["UID": getuid()]
-            #elseif os(iOS)
+            #if os(iOS)
             providerConfiguration = nil
             #else
             #error("Unimplemented")
@@ -76,12 +72,8 @@ extension NETunnelProviderProtocol {
             passwordReference = Keychain.makeReference(containing: oldConfig, called: name)
             return true
         }
-        #if os(macOS)
-        if passwordReference != nil && providerConfiguration?["UID"] == nil && verifyConfigurationReference() {
-            providerConfiguration = ["UID": getuid()]
-            return true
-        }
-        #elseif os(iOS)
+
+        #if os(iOS)
         /* Update the stored reference from the old iOS 14 one to the canonical iOS 15 one.
          * The iOS 14 ones are 96 bits, while the iOS 15 ones are 160 bits. We do this so
          * that we can have fast set exclusion in deleteReferences safely. */

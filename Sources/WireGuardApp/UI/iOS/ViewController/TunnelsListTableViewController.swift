@@ -94,7 +94,7 @@ class TunnelsListTableViewController: UIViewController {
         switch tableState {
         case .normal:
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped(sender:)))
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: tr("tunnelsListSettingsButtonTitle"), style: .plain, target: self, action: #selector(settingsButtonTapped(sender:)))
+//            navigationItem.leftBarButtonItem = UIBarButtonItem(title: tr("tunnelsListSettingsButtonTitle"), style: .plain, target: self, action: #selector(settingsButtonTapped(sender:)))
         case .rowSwiped:
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: tr("tunnelsListSelectButtonTitle"), style: .plain, target: self, action: #selector(selectButtonTapped))
@@ -137,66 +137,12 @@ class TunnelsListTableViewController: UIViewController {
     @objc func addButtonTapped(sender: AnyObject) {
         guard tunnelsManager != nil else { return }
 
-        let alert = UIAlertController(title: "", message: tr("addTunnelMenuHeader"), preferredStyle: .actionSheet)
-        let importFileAction = UIAlertAction(title: tr("addTunnelMenuImportFile"), style: .default) { [weak self] _ in
-            self?.presentViewControllerForFileImport()
-        }
-        alert.addAction(importFileAction)
-
-        let scanQRCodeAction = UIAlertAction(title: tr("addTunnelMenuQRCode"), style: .default) { [weak self] _ in
-            self?.presentViewControllerForScanningQRCode()
-        }
-        alert.addAction(scanQRCodeAction)
-
-        let createFromScratchAction = UIAlertAction(title: tr("addTunnelMenuFromScratch"), style: .default) { [weak self] _ in
-            if let self = self, let tunnelsManager = self.tunnelsManager {
-                self.presentViewControllerForTunnelCreation(tunnelsManager: tunnelsManager)
-            }
-        }
-        alert.addAction(createFromScratchAction)
-
-        let cancelAction = UIAlertAction(title: tr("actionCancel"), style: .cancel)
-        alert.addAction(cancelAction)
-
-        if let sender = sender as? UIBarButtonItem {
-            alert.popoverPresentationController?.barButtonItem = sender
-        } else if let sender = sender as? UIView {
-            alert.popoverPresentationController?.sourceView = sender
-            alert.popoverPresentationController?.sourceRect = sender.bounds
-        }
-        present(alert, animated: true, completion: nil)
-    }
-
-    @objc func settingsButtonTapped(sender: UIBarButtonItem) {
-        guard tunnelsManager != nil else { return }
-
-        let settingsVC = SettingsTableViewController(tunnelsManager: tunnelsManager)
-        let settingsNC = UINavigationController(rootViewController: settingsVC)
-        settingsNC.modalPresentationStyle = .formSheet
-        present(settingsNC, animated: true)
-    }
-
-    func presentViewControllerForTunnelCreation(tunnelsManager: TunnelsManager) {
-        let editVC = TunnelEditTableViewController(tunnelsManager: tunnelsManager)
-        let editNC = UINavigationController(rootViewController: editVC)
-        editNC.modalPresentationStyle = .fullScreen
-        present(editNC, animated: true)
-    }
-
-    func presentViewControllerForFileImport() {
         let documentTypes = ["com.wireguard.config.quick", String(kUTTypeText), String(kUTTypeZipArchive)]
         let filePicker = UIDocumentPickerViewController(documentTypes: documentTypes, in: .import)
         filePicker.delegate = self
         present(filePicker, animated: true)
     }
 
-    func presentViewControllerForScanningQRCode() {
-        let scanQRCodeVC = QRScanViewController()
-        scanQRCodeVC.delegate = self
-        let scanQRCodeNC = UINavigationController(rootViewController: scanQRCodeVC)
-        scanQRCodeNC.modalPresentationStyle = .fullScreen
-        present(scanQRCodeNC, animated: true)
-    }
 
     @objc func selectButtonTapped() {
         let shouldCancelSwipe = tableState == .rowSwiped
@@ -253,23 +199,7 @@ class TunnelsListTableViewController: UIViewController {
         }
     }
 
-    func showTunnelDetail(for tunnel: TunnelContainer, animated: Bool) {
-        guard let tunnelsManager = tunnelsManager else { return }
-        guard let splitViewController = splitViewController else { return }
-        guard let navController = navigationController else { return }
 
-        let tunnelDetailVC = TunnelDetailTableViewController(tunnelsManager: tunnelsManager,
-                                                             tunnel: tunnel)
-        let tunnelDetailNC = UINavigationController(rootViewController: tunnelDetailVC)
-        tunnelDetailNC.restorationIdentifier = "DetailNC"
-        if splitViewController.isCollapsed && navController.viewControllers.count > 1 {
-            navController.setViewControllers([self, tunnelDetailNC], animated: animated)
-        } else {
-            splitViewController.showDetailViewController(tunnelDetailNC, sender: self, animated: animated)
-        }
-        detailDisplayedTunnel = tunnel
-        self.presentedViewController?.dismiss(animated: false, completion: nil)
-    }
 }
 
 extension TunnelsListTableViewController: UIDocumentPickerDelegate {
@@ -279,19 +209,6 @@ extension TunnelsListTableViewController: UIDocumentPickerDelegate {
     }
 }
 
-extension TunnelsListTableViewController: QRScanViewControllerDelegate {
-    func addScannedQRCode(tunnelConfiguration: TunnelConfiguration, qrScanViewController: QRScanViewController,
-                          completionHandler: (() -> Void)?) {
-        tunnelsManager?.add(tunnelConfiguration: tunnelConfiguration) { result in
-            switch result {
-            case .failure(let error):
-                ErrorPresenter.showErrorAlert(error: error, from: qrScanViewController, onDismissal: completionHandler)
-            case .success:
-                completionHandler?()
-            }
-        }
-    }
-}
 
 extension TunnelsListTableViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -330,13 +247,15 @@ extension TunnelsListTableViewController: UITableViewDataSource {
 
 extension TunnelsListTableViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard !tableView.isEditing else {
-            tableState = .multiSelect(selectionCount: tableView.indexPathsForSelectedRows?.count ?? 0)
-            return
-        }
-        guard let tunnelsManager = tunnelsManager else { return }
-        let tunnel = tunnelsManager.tunnel(at: indexPath.row)
-        showTunnelDetail(for: tunnel, animated: true)
+//        guard !tableView.isEditing else {
+//            tableState = .multiSelect(selectionCount: tableView.indexPathsForSelectedRows?.count ?? 0)
+//            return
+//        }
+//        guard let tunnelsManager = tunnelsManager else { return }
+//        let tunnel = tunnelsManager.tunnel(at: indexPath.row)
+//        showTunnelDetail(for: tunnel, animated: true)
+
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -403,9 +322,6 @@ extension TunnelsListTableViewController: TunnelsManagerListDelegate {
                 splitViewController.showDetailViewController(detailNC, sender: self)
             }
             detailDisplayedTunnel = nil
-            if let presentedNavController = self.presentedViewController as? UINavigationController, presentedNavController.viewControllers.first is TunnelEditTableViewController {
-                self.presentedViewController?.dismiss(animated: false, completion: nil)
-            }
         }
     }
 }

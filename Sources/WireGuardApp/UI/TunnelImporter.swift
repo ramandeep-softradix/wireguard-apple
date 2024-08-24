@@ -13,18 +13,20 @@ class TunnelImporter {
         var configs = [TunnelConfiguration?]()
         var lastFileImportErrorText: (title: String, message: String)?
         for url in urls {
-            if url.pathExtension.lowercased() == "zip" {
-                dispatchGroup.enter()
-                ZipImporter.importConfigFiles(from: url) { result in
-                    switch result {
-                    case .failure(let error):
-                        lastFileImportErrorText = error.alertText
-                    case .success(let configsInZip):
-                        configs.append(contentsOf: configsInZip)
-                    }
-                    dispatchGroup.leave()
-                }
-            } else { /* if it is not a zip, we assume it is a conf */
+//            if url.pathExtension.lowercased() == "zip" {
+//                dispatchGroup.enter()
+//                ZipImporter.importConfigFiles(from: url) { result in
+//                    switch result {
+//                    case .failure(let error):
+//                        lastFileImportErrorText = error.alertText
+//                    case .success(let configsInZip):
+//                        configs.append(contentsOf: configsInZip)
+//                    }
+//                    dispatchGroup.leave()
+//                }
+//            } else
+
+            if url.pathExtension.lowercased() == "zip"{ /* if it is not a zip, we assume it is a conf */
                 let fileName = url.lastPathComponent
                 let fileBaseName = url.deletingPathExtension().lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
                 dispatchGroup.enter()
